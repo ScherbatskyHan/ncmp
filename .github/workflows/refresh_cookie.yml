@@ -67,7 +67,7 @@ on:
   #   - 只用桌面定时触发云端：注释掉整个 schedule 块
   # 不需要定时则注释掉整个 schedule 块
   schedule:
-    - cron: '0 8 * * *'
+    - cron: '0 1 * * *'
 
 # 同一仓库并发限制：避免多个 run 同时跑触发风控
 concurrency:
@@ -95,7 +95,7 @@ jobs:
 
       - name: Random delay start (optional)
         env:
-          RANDOM_DELAY_MINUTES: ${{ secrets.RANDOM_DELAY_MINUTES || '0' }}
+          RANDOM_DELAY_MINUTES: ${{ secrets.RANDOM_DELAY_MINUTES || '10' }}
         run: |
           max_min="${RANDOM_DELAY_MINUTES:-0}"
           if ! [[ "${max_min}" =~ ^[0-9]+$ ]]; then
@@ -218,7 +218,7 @@ jobs:
       - name: Send success email
         if: ${{ always() && steps.run_ncmp.outcome == 'success' }}
         env:
-          SEND_SUCCESS_EMAIL: ${{ secrets.SEND_SUCCESS_EMAIL || 'false' }}
+          SEND_SUCCESS_EMAIL: ${{ secrets.SEND_SUCCESS_EMAIL || 'true' }}
           NOTIFY_EMAIL: ${{ secrets.NOTIFY_EMAIL }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
           SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
